@@ -10,7 +10,7 @@ class TestExpFaultyData(unittest.TestCase):
         self.context_K = [self.context_df.values.tolist(),self.context_df.shape]
         context_df_expert = pd.read_csv('example_expert.csv',sep=';')
         self.context_expert = [context_df_expert.values.tolist(),context_df_expert.shape]
-        self.context_L = [[[0, 0, 0, 1, 0, 0]],(1,6)]
+        self.context_L = [[[0, 0, 0, 1, 1, 1]],(1,6)]
 
         context_KLi = copy.deepcopy(self.context_K)
         for c in self.context_L[0]:
@@ -46,10 +46,10 @@ class TestExpFaultyData(unittest.TestCase):
         expert_p = ExpFaultyData.expert_p(imp, self.context_K, self.M)
         self.assertEqual(expert_p, False)
     
-    # def test_expert_p_invalid(self):
-    #     imp = Implication({0}, {2, 3, 4, 5})
-    #     expert_p = ExpFaultyData.expert_p(imp, self.context_K, self.M)
-    #     self.assertEqual(expert_p, [1, 0, 0, 0, 0, 0])
+    def test_expert_p_invalid(self):
+        imp = Implication({0}, {2, 3, 4, 5})
+        expert_p = ExpFaultyData.expert_p(imp, self.context_K, self.M)
+        self.assertEqual(len(expert_p), len(self.M))
 
 # #------------------------------------------------------------------------------
 
@@ -111,18 +111,18 @@ class TestExpFaultyData(unittest.TestCase):
 
 #------------------------------------------------------------------------------
 
-    # def test_SmallestIntent_empty(self):
-    #     A = set() # milk
-    #     l = -1
-    #     smallestIntent = ExpFaultyData.SmallestIntent(A, self.M, self.context_KLi, self.context_L, self.K, self.context_K, l, self.c)
-    #     self.assertEqual(smallestIntent, {1}) # milk 
+    def test_SmallestIntent_empty(self):
+        A = set() # milk
+        l = -1
+        smallestIntent = ExpFaultyData.SmallestIntent(A, self.M, self.context_KLi, self.context_L, self.K, self.context_K, l, self.c)
+        self.assertEqual(smallestIntent, {5}) # milk 
 
+    def test_SmallestIntent_notempty(self):
+        A = {5} # milk
+        l = -1
+        smallestIntent = ExpFaultyData.SmallestIntent(A, self.M, self.context_KLi, self.context_L, self.K, self.context_K, l, self.c)
+        self.assertEqual(smallestIntent, {4}) # milk 
 
-    # def test_SmallestIntent_empty(self):
-    #     A = {3} # milk
-    #     l = -1
-    #     smallestIntent = ExpFaultyData.SmallestIntent(A, self.M, self.context_KLi, self.context_L, self.K, self.context_K, l, self.c)
-    #     self.assertEqual(smallestIntent, {1}) # milk 
 #------------------------------------------------------------------------------
 
     def test_DeleteFalseImplications_conter(self):

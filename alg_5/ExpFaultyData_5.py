@@ -58,18 +58,20 @@ class ExpFaultyData:
                 if (context_Li[0] == []):
                     B_L = set()
                 else:
-                    ExpFaultyData.ClosureOnContext(B_L, context_Li)
+                    B_L = ExpFaultyData.ClosureOnContext(B_L, context_Li)
 
                 B_K = copy.deepcopy(B)
-                ExpFaultyData.ClosureOnImp(B_K, Ki)
+                B_K = ExpFaultyData.ClosureOnImp(B_K, Ki)
 
                 B_L_K_diff = B_L.difference(B_K)
 
                 exist = False
 
                 for m in B_L_K_diff:
-                    if ExpFaultyData.FindConfidence(Implication(B, {m}), context_K) >= c :
-                        l == m
+                    if float(ExpFaultyData.FindConfidence(Implication(B, {m}), context_K)) >= float(c) :
+                        l = m
+                        print(Implication(B, {m}))
+                        print (l)
                         exist = True
                         break
 
@@ -124,6 +126,7 @@ class ExpFaultyData:
         print('Значение M - ' + str(M))
         print('Значение K - ' + str(K))
         print('Значение Th_c_K - ' + str(Th_c_K))
+        print('Значение c - ' + str(c))
         # i
         i = 0
         Pi = ExpFaultyData.ClosureOnImp(set(), K)
@@ -138,8 +141,8 @@ class ExpFaultyData:
         while (True):
             # ii
             context_KLi = copy.deepcopy(context_K)
-            for c in context_Li[0]:
-                context_KLi[0].append(c)
+            for contr in context_Li[0]:
+                context_KLi[0].append(contr)
             m = -1
             Pi_1 = ExpFaultyData.SmallestIntent(Pi, M, context_KLi, context_Li, Ki, context_K, m, c)
             Pi_2 = ExpFaultyData.SmallestSet(Pi, M, Ki, context_KLi)

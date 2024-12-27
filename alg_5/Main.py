@@ -8,7 +8,7 @@ def main():
     context_df_expert = pd.read_csv('example_expert.csv',sep=';')
     context_expert = [context_df_expert.values.tolist(),context_df_expert.shape]
     # Достоверность
-    c = 0.5
+    c = float(0.5)
 
     M=list(range(0,context_K[1][1]))
     Th_c_K = {Implication({0}, {3}), #hair -> milk
